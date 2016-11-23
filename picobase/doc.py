@@ -44,6 +44,10 @@ class Doc:
     def value(self) -> JsonDict:
         return self.__dict__
     
+    def hasId(self) -> bool:
+        """ does this document have an _id? """
+        return '_id' in self.__dict__
+    
     
     
     
