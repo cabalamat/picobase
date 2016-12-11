@@ -1,12 +1,12 @@
 # test_doc.py = test doc.py
 
-import unittest
+import lintest
 
 from doc import Doc
 
 #---------------------------------------------------------------------
 
-class T_Doc(unittest.TestCase):
+class T_Doc(lintest.TestCase):
 
     def test_creation(self):
         d = Doc(aaa=3, bbb=6)
@@ -17,9 +17,11 @@ class T_Doc(unittest.TestCase):
         self.assertEqual(d.bbb, 6, "bbb is 6")
 
 #---------------------------------------------------------------------
+    
+group = lintest.TestGroup()
+group.add(T_Doc)
 
-if __name__ == '__main__':
-    unittest.main()
+if __name__=='__main__': group.run()
 
 
 

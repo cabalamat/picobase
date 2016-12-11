@@ -1,7 +1,7 @@
 # test_table.py = test <table.py>
 
 
-import unittest
+import lintest
 
 from doc import Doc
 from table import Table
@@ -9,7 +9,7 @@ from database import Database
 
 #---------------------------------------------------------------------
 
-class T_Table(unittest.TestCase):
+class T_Table(lintest.TestCase):
 
     def test_creation(self):
         db = Database("mydatabase")
@@ -21,9 +21,12 @@ class T_Table(unittest.TestCase):
         self.assertEqual(t.count(), 1, "1 document now")
 
 #---------------------------------------------------------------------
+ 
+group = lintest.TestGroup()
+group.add(T_Table)
 
-if __name__ == '__main__':
-    unittest.main()
+if __name__=='__main__': group.run()
+
 
 
 
