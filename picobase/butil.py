@@ -1,6 +1,7 @@
 # butil.py = basic utilities
 
 from typing import *
+import os, os.path
 
 #---------------------------------------------------------------------
 

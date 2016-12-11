@@ -3,30 +3,9 @@
 
 from typing import *
 
+from picotypes import *
 from database import Database
 from doc import Doc
-
-#---------------------------------------------------------------------
-
-"""
-Queries are a subset of those in MongoDB and are of the form:
-
-   { fieldName1: value1,
-     fieldName2: value2 
-     ...
-   }
-
-Every field mentioned has to have the specified value.
-
-Later, queries will be more complete. A query of {} or None
-passes through all Documents.
-"""
-Query = Union[Dict[str,Any], None]
-
-"""
-An _id (primary key) to a document is either a string or an integer.
-"""
-IdType = Union[str,int]
 
 #---------------------------------------------------------------------
 
@@ -64,10 +43,19 @@ class Table:
         self.docs.append(doc)
         self.index.addIndex(doc._id, len(self.docs)-1)
         
-    def find(self, query: Query =None) -> List[Doc]:
-        """ Returns all the douments satisfying the query """
+    def find(self, query: Query =None) -> Iterator[Doc]:
+        """ Returns all the documents satisfying the query """
         # for now return all documents
-        return self.docs
+        if query:            
+            for doc in self.docs:
+                if doc.satisfies(query):
+                    yield doc
+            #//for    
+        else:
+            # no query
+            for doc in self.docs:
+                yield doc
+            #//for    
         
     def getDoc(self, id: str) -> Optional[Doc]:
         """ fetches a doc based on its _id; if it wasn't there, 
@@ -89,7 +77,10 @@ class Table:
         return len(self.docs)
             
     def newId(self) -> str:
-        """ return a new, unused _id for this document """        
+        """ return a new, unused _id for this document """ 
+        r = "%d" % self.nextId
+        self.nextId += 1
+        return r
         
 
 #---------------------------------------------------------------------

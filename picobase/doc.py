@@ -7,23 +7,7 @@ Keys are strings, values are any Jsonable value.
 
 ***"""
 
-from typing import Union, Dict, List, Tuple
-
-SimpleValue = Union[str, int, float, bool, None]
-
-Jsonable = Union[SimpleValue, 
-                 Dict[str, 'Jsonable'], 
-                 List['Jsonable'], 
-                 Tuple['Jsonable', ...]]
-
-JsonDict = Dict[str, 'Jsonable']
-
-import json
-
-v = [2,3,4, "hello", (66,77), True, None]
-j = json.dumps(v)
-
-print("v=%r\nj=%r" % (v,j))
+from picotypes import *
 
 #---------------------------------------------------------------------
 
@@ -48,6 +32,16 @@ class Doc:
         """ does this document have an _id? """
         return '_id' in self.__dict__
     
+    def satisfies(self, query: Query)-> bool:
+        """ Does this document satisfy a query ? """
+        if query is None: return True
+        for k, v in query.items():
+            if self.hasattr(k) and self.__dict__[k]==v:
+                pass
+            else:
+                return False
+        #//for
+        return True
     
     
     
