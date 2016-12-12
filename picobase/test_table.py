@@ -42,11 +42,13 @@ class T_Table(lintest.TestCase):
         ds = list(t.find())
         self.assertSame(len(ds), 10, "returned all 10 douments")
         
-    def xxxtest_find_q(self):
+    def test_find_q(self):
         """ find() using a query """
         t = self.db["mytable"]
         ds = list(t.find({'bar':'Alice'}))
-        self.assertSame(len(ds), 10, "returned 3 douments")
+        self.assertSame(len(ds), 3, "returned 3 douments")
+        fooValues = sorted(d.foo for d in ds)
+        self.assertSame(fooValues, [4, 5, 6])
         
         
         
@@ -57,11 +59,5 @@ group = lintest.TestGroup()
 group.add(T_Table)
 
 if __name__=='__main__': group.run()
-
-
-
-
-
-
 
 #end

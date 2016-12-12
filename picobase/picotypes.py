@@ -1,7 +1,17 @@
 # picotypes.py = types used by picobase
 
 from typing import Union, Dict, List, Tuple, Any
+import sys
 
+#---------------------------------------------------------------------
+
+if (sys.version_info[0],sys.version_info[1])<(3,5):
+    s = "Requires Python 3.5 or later"
+    s2 = "** " + s + " **"
+    h = "*"*len(s2)
+    print("%s\n%s\n%s", h, s2, h)
+    sys.exit()
+    
 #---------------------------------------------------------------------
 
 SimpleValue = Union[str, int, float, bool, None]

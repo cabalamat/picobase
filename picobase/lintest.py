@@ -49,6 +49,7 @@ class ColoursMixin:
     
     # colours for a line noting entry into a test method
     TEST_METHOD_LINE = tc.BLUE
+    TEST_DOCSTRING = tc.MAGENTA
     NORMAL = tc.NORMAL
 
 #---------------------------------------------------------------------
@@ -334,12 +335,17 @@ class TestCase(Test, FileAssertionMixin, ColoursMixin):
             kn = self.__class__.__name__
             funName = test.__code__.co_name
             funLineNum = test.__code__.co_firstlineno
-            print("%s%s=== %s%s.%s:%d ===%s" \
+            print("%s%s=== %s%s.%s:%d ===%s" 
                 % (self.optCR, 
                    self.TEST_METHOD_LINE,
                    self._pnTxt(), kn, funName,
                    funLineNum,
                    self.NORMAL))
+            if test.__doc__:
+                print("%s* %s *%s" % (
+                    self.TEST_DOCSTRING,
+                    test.__doc__.strip(),
+                    self.NORMAL))
             test(self)
             functionsPassed += 1
             self.doRun("tearDown")
@@ -373,11 +379,11 @@ class TestCase(Test, FileAssertionMixin, ColoursMixin):
 
         tests = []
         for k,v in self.__class__.__dict__.items():
-            print("mmm k=%r v=%r" % (k,v))
+            #print("k=%r v=%r" % (k,v))
             if k[:5] == "test_":
                 vfc = v.__code__
-                print("test function: %s (%d)" % (
-                    vfc.co_name, vfc.co_firstlineno))
+                #print("test function: %s (%d)" % (
+                #    vfc.co_name, vfc.co_firstlineno))
                 
                 tests.append(v)
         tests.sort(key=lambda f: (

@@ -16,6 +16,36 @@ class T_Doc(lintest.TestCase):
         self.assertEqual(d.aaa, 3, "aaa is 3")
         self.assertEqual(d.bbb, 6, "bbb is 6")
 
+    def test_satisfies(self):
+        d = Doc(aaa=3, bbb=6, c='cat')
+        r = d.satisfies(None)
+        self.assertTrue(r, "query None -> always True") 
+        r = d.satisfies({})
+        self.assertTrue(r, "query {} -> always True") 
+        
+        r = d.satisfies({'aaa':3})
+        self.assertTrue(r, "{'aaa':3} -> True") 
+        r = d.satisfies({'aaa':66})
+        self.assertFalse(r, "{'aaa':66} -> False") 
+        
+        r = d.satisfies({'c':'cat'})
+        self.assertTrue(r, "{'c':'cat'} -> True") 
+        r = d.satisfies({'c':'owl'})
+        self.assertFalse(r, "{'c':'owl'} -> False") 
+        
+        # multiple test must all be right
+        r = d.satisfies({'aaa':3, 'bbb':6, 'c':'cat'})
+        self.assertTrue(r, "{'aaa':3, 'bbb':6, 'c':'cat'} -> True") 
+        r = d.satisfies({'aaa':3, 'bbb':6, 'c':'llama'})
+        self.assertFalse(r, "{'aaa':3, 'bbb':6, 'c':'llama'} -> False") 
+        
+        # tests to non-existent field fail
+        r = d.satisfies({'aaa':3, 'bbb':6, 'cc':'cat'})
+        self.assertFalse(r, "{'aaa':3, 'bbb':6, 'cc':'cat'} -> False") 
+        r = d.satisfies({'no':'nnn'})
+        self.assertFalse(r, "{'no':'nnn'} -> False") 
+        
+
 #---------------------------------------------------------------------
     
 group = lintest.TestGroup()
